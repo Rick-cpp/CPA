@@ -1,9 +1,6 @@
 {
     "files.exclude": {
-        "**/.git": true,
-        "**/.svn": true,
-        "**/.hg": true,
-        "**/.DS_Store": true,
+        "**/CPA.egg-info": true,
         "**/__pycache__": true
     }
 }

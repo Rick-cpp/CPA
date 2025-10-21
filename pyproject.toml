@@ -1,0 +1,9 @@
+[project]
+name = "CPA"
+version = "0.1"
+description = "CMD Utility for C++ projects"
+authors = [{ name="Rickz" }]
+dependencies = []
+
+[project.scripts]
+CPA = "index:main"
