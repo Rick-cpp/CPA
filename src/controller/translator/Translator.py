@@ -6,13 +6,21 @@ CURRENT_PATH = os.getcwd()
 
 def translatorController(args:list[str]) -> None:
     if "*" in args[0]:
-        data = files(deep=args[0] == "**")
+        if args[0] == "*":
+            data = _files(deep=False)
+        if args[0] == "**":
+            data = _files(deep=True)
+    else:
+        data = [args[0]]
+    
+    for i in data:
+        _create(i)
         
 
-def files(root:str = CURRENT_PATH, current:list[str] = [], deep:bool = False) -> list[str]:
+def _files(root:str = CURRENT_PATH, current:list[str] = [], deep:bool = False) -> list[str]:
     for i in pathlib.Path(root).glob("*"):
         if deep == True and i.is_dir():
-            files(i.absolute(), current, deep)
+            _files(i.absolute(), current, deep)
             continue
         if ".hpp" in i.name:
             current.append(str(i.absolute()))

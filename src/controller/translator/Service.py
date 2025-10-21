@@ -25,6 +25,14 @@ class Pointer:
             self.position -= 1
             return False
         return True
+    
+    def __str__(self) -> str:
+        text = f"pointer: {self.position}\n"
+        
+        for i in range(len(self.code)):
+            text += f"[{i}] - {self.code[i].strip()}\n"
+        
+        return text[:-1]
 
 class Step(ABC):
     @abstractmethod
@@ -101,7 +109,7 @@ class StepInclude(Step):
                 output.hIncludes.append(line.split("<")[1][:-1])
                 continue
                 
-            return "Error: Unknown token"
+            return f"Error: Unknown token H {pointer}"
             
     def cpp(self, pointer:Pointer, output:Data.CHppFile) -> str:
         while pointer.next():
@@ -120,11 +128,11 @@ class StepInclude(Step):
                 output.cppIncludes.append(line.split("<")[1][:-1])
                 continue
                 
-            return "Error: Unknown token"
+            return f"Error: Unknown token CPP {pointer}"
 
 class StepClass(Step):
     __regex:str = r"class [a-zA-Z]+( | : [a-zA-Z]+ ){"
-    __var_regex:str = r"(?:const\s+)?([a-zA-Z:.\d]+)\s+([a-zA-Z_][a-zA-Z_0-9]*)\s*(?:=\s*(.+?))?;"
+    __var_regex:str = r"(?:const\s+)?([a-zA-Z:.<>\d]+)\s+([a-zA-Z_][a-zA-Z_0-9]*)\s*(?:=\s*(.+?))?;"
     __func_regex:str = r"(\s*const\s+)?([a-zA-Z_][\w:<>\s*&\[\]]*)\s+(operator[^\s(]+|[~\w:]+)\s*\(([^)]*)\)\s*(const\s*)?(?:\s*(final|override)\s*){0,2}\{([\s\S]*)\}"
     __param_regex:str = r"(const\s+)?([a-zA-Z:.\d]+)&?\s+([a-zA-Z_][a-zA-Z_0-9]*)"
     
